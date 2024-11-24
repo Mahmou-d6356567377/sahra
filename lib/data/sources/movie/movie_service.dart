@@ -1,11 +1,31 @@
-import 'package:get_it/get_it.dart';
-import 'package:sahra/data/sources/API/http_service.dart';
+import 'package:sahra/data/models/movie_model/movie_model.dart';
+import 'package:sahra/data/sources/API/api_service.dart';
 
-class MovieService {
-  final GetIt getIt = GetIt.instance;
-  late HTTPService _http;
+class MovieServiceRepo {
+  final ApiService apiService;
 
-  MovieService() {
-    _http = getIt.get<HTTPService>();
+  MovieServiceRepo({required this.apiService});
+
+  Future<List<MovieModel>> getPopulerMovies({
+    required int page,
+    String? token,
+  }) async {
+    try {
+      final response = await apiService.get(
+        url: '/movie/populer?page=$page',
+        token: token,
+      );
+
+      if (response.containsKey('results')) {
+        final List<MovieModel> movies = (response['results'] as List)
+            .map((data) => MovieModel.fromJson(data))
+            .toList();
+        return movies;
+      } else {
+        throw Exception('Invalid response format');
+      }
+    } catch (e) {
+      throw Exception('Error fetching popular movies: $e');
+    }
   }
 }

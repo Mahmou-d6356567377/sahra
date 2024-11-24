@@ -75,9 +75,21 @@ class MainScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _searchFieldWidget(),
+        _dropMenue(),
         ],
       ),
     );
+  }
+
+  Widget _dropMenue() {
+    return DropdownButton(
+      value: "populer",
+      items: [
+      DropdownMenuItem(value: "populer",child: Text("populer")),
+      DropdownMenuItem(value: "upcoming",child: Text("upcoming")),
+      DropdownMenuItem(value: "latest",child: Text("latest")),
+
+    ], onChanged: (value) {});
   }
 
   Widget _searchFieldWidget() {
@@ -87,20 +99,21 @@ class MainScreen extends ConsumerWidget {
       height: _deviceheight! * .05,
       child: TextField(
         controller: textfieldcontroller,
-        onSubmitted: (_input){ },
+        onSubmitted: (_input) {},
         style: const TextStyle(color: Colors.white),
-        
         decoration: InputDecoration(
-          focusedBorder: _border,
-          border: _border, 
-          prefixIcon: Icon(Icons.search, color: Colors.white24,),
-          hintStyle: TextStyle(
-            color: Colors.white24,
-          ),
-          filled: false,
-          fillColor: Colors.white24,
-          hintText: "search ...."
-        ),
+            focusedBorder: _border,
+            border: _border,
+            prefixIcon: Icon(
+              Icons.search,
+              color: Colors.white24,
+            ),
+            hintStyle: TextStyle(
+              color: Colors.white24,
+            ),
+            filled: false,
+            fillColor: Colors.white24,
+            hintText: "search ...."),
       ),
     );
   }

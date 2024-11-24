@@ -16,7 +16,7 @@ class ApiService {
     if (token != null) {
       headers.addAll({'Authorization': 'Bearer $token'});
     }
- 
+
     var response = await _dio.get(
       url,
       options: Options(headers: headers),

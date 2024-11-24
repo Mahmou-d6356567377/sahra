@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       child: MaterialApp.router(
         routerConfig: AppRoutes.routers,
-         debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

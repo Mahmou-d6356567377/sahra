@@ -1,11 +1,10 @@
 import 'package:sahra/data/models/app_config/app_config.dart';
 
-
 //Packages
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
-class HTTPService {
+class ApiService {
   final Dio dio = Dio();
   final GetIt getIt = GetIt.instance;
 
