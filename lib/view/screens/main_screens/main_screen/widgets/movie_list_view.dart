@@ -1,47 +1,103 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sahra/data/controllers/page_controller/pagecontroller.dart';
-import 'package:sahra/data/models/movie_model/movie_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sahra/data/cubits/getmovies_cubit.dart';
+import 'package:sahra/view/screens/main_screens/main_screen/widgets/movie_item.dart';
 
-class MovieListView extends StatelessWidget {
-  final List<MovieModel> movies;
+class MovieListView extends StatefulWidget {
+  const MovieListView({Key? key}) : super(key: key);
 
-  const MovieListView({Key? key, required this.movies}) : super(key: key);
+  @override
+  _MovieListViewState createState() => _MovieListViewState();
+}
+
+class _MovieListViewState extends State<MovieListView> {
+  final ScrollController _scrollController = ScrollController();
+  int page = 1; // Initial page
+  bool isScrollingDown = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  // Detect scrolling position to increase or decrease the page
+  void _scrollListener() {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      // Reached bottom, increase the page
+      setState(() {
+        page++;
+      });
+      _loadMoreMovies();
+    } else if (_scrollController.position.pixels == _scrollController.position.minScrollExtent) {
+      // Reached top, decrease the page
+      if (page > 1) {
+        setState(() {
+          page--;
+        });
+        _loadMoreMovies(isScrollingDown: false);
+      }
+    }
+  }
+
+  // Fetch more movies when page changes
+  void _loadMoreMovies({bool isScrollingDown = true}) {
+    // Call the Cubit to fetch movies for the new page
+    BlocProvider.of<GetmoviesCubit>(context).fetchMovies(page);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: movies.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(movies[index].title!),
-        );
-      },
-    );
-  }
-}
-
-class MovieListScreen extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // Watch the state from the provider
-    final mainPageState = ref.watch(MainPageController as ProviderListenable);
-
-    return Scaffold(
-      appBar: AppBar(title: Text('Movies')),
-      body: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () {
+    return BlocBuilder<GetmoviesCubit, GetmoviesState>(
+      builder: (context, state) {
+        if (state is GetmoviesSuccess) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              setState(() {
+                page = 1; // Reset to page 1 on pull to refresh
+              });
+              await BlocProvider.of<GetmoviesCubit>(context).fetchMovies(page);
             },
-            child: Text('Fetch Movies'),
-          ),
-          Expanded(
-            // Pass the movies list from the state
-            child: MovieListView(movies: mainPageState.movies),
-          ),
-        ],
-      ),
+            child: ListView.builder(
+              controller: _scrollController, // Attach the scroll controller
+              itemCount: state.movies.length,
+              itemBuilder: (context, index) {
+                return MovieItem(
+                    movieItemDetails: state.movies[index], height: 200, width: 100);
+              },
+            ),
+          );
+        } else if (state is GetmoviesFailure) {
+          return Center(
+            child: Text(
+              state.errmsg,
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+          );
+        } else if (state is GetmoviesLoading) {
+          return const Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.white,
+              color: Colors.blue,
+            ),
+          );
+        } else {
+          return const Center(
+            child: Text(
+              'Something went wrong!',
+              style: TextStyle(color: Colors.white),
+            ),
+          );
+        }
+      },
     );
   }
 }

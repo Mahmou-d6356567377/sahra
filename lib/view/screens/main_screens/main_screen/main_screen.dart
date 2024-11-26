@@ -1,38 +1,47 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sahra/view/screens/main_screens/main_screen/widgets/movie_list_view.dart';
 
-class MainScreen extends ConsumerWidget {
-  double? _deviceheight;
-  double? _devicewidth;
-  TextEditingController? textfieldcontroller;
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    _deviceheight = MediaQuery.of(context).size.height;
-    _devicewidth = MediaQuery.of(context).size.width;
-    textfieldcontroller = TextEditingController();
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  String? _selectedCategory = 'populer';
+  int page = 1;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double _deviceheight = MediaQuery.of(context).size.height;
+    double _devicewidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Container(
-        height: MediaQuery.sizeOf(context).height,
-        width: MediaQuery.sizeOf(context).width,
+      body: SizedBox(
+        height: _deviceheight,
+        width: _devicewidth,
         child: Stack(
           alignment: Alignment.center,
           children: [
-            _backGroundWidget(),
-            _forGroundWidget(),
+            _backgroundWidget(),
+            _foregroundWidget(_deviceheight, _devicewidth),
           ],
         ),
       ),
     );
   }
 
-  Widget _backGroundWidget() {
+  Widget _backgroundWidget() {
     return Container(
-      height: _deviceheight,
-      width: _devicewidth,
+      height: double.infinity,
+      width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         image: const DecorationImage(
@@ -47,74 +56,82 @@ class MainScreen extends ConsumerWidget {
     );
   }
 
-  Widget _forGroundWidget() {
-    return Container(
-      padding: EdgeInsets.fromLTRB(0, _deviceheight! * .02, 0, 0),
-      width: _devicewidth! * .9,
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _topBarWidget(),
-        ],
+  Widget _foregroundWidget(double height , double width) {
+
+
+    return SafeArea(
+      child: Container(
+        padding: EdgeInsets.fromLTRB(0, 0, 0, height * .01),
+        width: width * .9,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _topBarWidget(),
+            Expanded(child: _itemListWidget()),
+          ],
+        ),
       ),
     );
   }
 
   Widget _topBarWidget() {
     return Container(
-      height: _deviceheight! * .08,
+      height: 80.0,
       decoration: BoxDecoration(
         color: Colors.black54,
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           _searchFieldWidget(),
-        _dropMenue(),
+          _dropDownMenu(),
         ],
       ),
     );
   }
 
-  Widget _dropMenue() {
-    return DropdownButton(
-      value: "populer",
-      items: [
-      DropdownMenuItem(value: "populer",child: Text("populer")),
-      DropdownMenuItem(value: "upcoming",child: Text("upcoming")),
-      DropdownMenuItem(value: "latest",child: Text("latest")),
-
-    ], onChanged: (value) {});
-  }
-
   Widget _searchFieldWidget() {
-    InputBorder _border = InputBorder.none;
-    return Container(
-      width: _devicewidth! * .5,
-      height: _deviceheight! * .05,
+    return const SizedBox(
+      width: 200.0,
+      height: 40.0,
       child: TextField(
-        controller: textfieldcontroller,
-        onSubmitted: (_input) {},
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
-            focusedBorder: _border,
-            border: _border,
-            prefixIcon: Icon(
-              Icons.search,
-              color: Colors.white24,
-            ),
-            hintStyle: TextStyle(
-              color: Colors.white24,
-            ),
-            filled: false,
-            fillColor: Colors.white24,
-            hintText: "search ...."),
+          focusedBorder: InputBorder.none,
+          border: InputBorder.none,
+          prefixIcon: Icon(
+            Icons.search,
+            color: Colors.white24,
+          ),
+          hintText: "Search...",
+          hintStyle: TextStyle(color: Colors.white24),
+        ),
       ),
     );
+  }
+
+  Widget _dropDownMenu() {
+    return DropdownButton<String>(
+      value: _selectedCategory,
+      dropdownColor: Colors.deepPurple.withOpacity(.5),
+      style: const TextStyle(color: Colors.white24),
+      items: const [
+        DropdownMenuItem<String>(value: "populer", child: Text("Populer")),
+        DropdownMenuItem<String>(value: "upcoming", child: Text("Upcoming")),
+        DropdownMenuItem<String>(value: "latest", child: Text("Latest")),
+      ],
+      onChanged: (String? newValue) {
+        setState(() {
+          _selectedCategory = newValue;
+        });
+      },
+    );
+  }
+
+  Widget _itemListWidget() {
+    return const MovieListView();
   }
 }

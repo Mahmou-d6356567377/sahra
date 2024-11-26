@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:sahra/core/constants/constants_properties.dart';
 import 'package:sahra/data/models/movie_model/movie_model.dart';
 import 'package:get_it/get_it.dart';
 
@@ -38,13 +40,13 @@ Widget build(BuildContext context) {
 Widget _moviePosterWidget(String? posterPath) {
   return Container(
     height: height,
-    width: width * 0.80,
+    width: width ,
     decoration: BoxDecoration(
       color: Colors.grey[800]!.withOpacity(.5),
       image: DecorationImage(
         image: posterPath != null && posterPath.isNotEmpty 
-            ? NetworkImage(posterPath)
-            : const AssetImage('assets/images/tstimg.jpg') as ImageProvider,
+            ? NetworkImage("${dotenv.env[kimagebaseurl]}$posterPath")
+            :  NetworkImage("${dotenv.env[kimagebaseurl]}$posterPath"),
         fit: BoxFit.cover,
       ),
     ),

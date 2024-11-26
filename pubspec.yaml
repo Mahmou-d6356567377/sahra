@@ -7,9 +7,13 @@ environment:
   sdk: ^3.5.3
 
 dependencies:
+  bloc: ^8.1.4
+  dartz: ^0.10.1
   dio: ^5.7.0
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.6
+  flutter_dotenv: ^5.2.1
   flutter_getit: ^3.0.1
   flutter_riverpod: ^2.6.1
   flutter_screenutil: ^5.9.3
@@ -25,3 +29,4 @@ flutter:
   assets:
     - assets/config/
     - assets/images/
+    - .env

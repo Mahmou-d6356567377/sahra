@@ -1,11 +1,5 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 import 'package:sahra/core/constants/constants_properties.dart';
-import 'package:sahra/data/models/app_config/app_config.dart';
-import 'package:sahra/data/sources/API/api_service.dart';
-import 'package:sahra/data/sources/movie/movie_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key, required this.onInitialComplete});
@@ -20,34 +14,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 1))
-        .then((_) => _setUp(context).then((_) => widget.onInitialComplete()));
+        .then((_) => widget.onInitialComplete());
   }
 
-  Future<void> _setUp(BuildContext _context) async {
-    final getIt = GetIt.instance;
-
-    try {
-      // Load configuration file
-      final configFile = await rootBundle.loadString('assets/config/main.json');
-      final configData = jsonDecode(configFile);
-
-      // Register AppConfig
-      getIt.registerSingleton<AppConfig>(AppConfig(
-        BASE_API_URL: configData['BASE_API_URL'],
-        BASE_IMAGE_API_URL: configData['BASE_IMAGE_API_URL'],
-        API_KEY: configData['API_KEY'],
-      ));
-
-      // Register ApiService and MovieServiceRepo
-      final apiService = ApiService();
-      getIt.registerSingleton<ApiService>(apiService);
-      getIt.registerSingleton<MovieServiceRepo>(
-          MovieServiceRepo(apiService: apiService));
-    } catch (e) {
-      debugPrint('Error during setup: $e');
-      rethrow;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

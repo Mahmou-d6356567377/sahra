@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiService {
   final Dio _dio;
@@ -10,12 +11,10 @@ class ApiService {
     return _instance;
   }
 
-  Future<Map<String, dynamic>> get(
-      {required String url, @required String? token}) async {
+  Future<Map<String, dynamic>> get({required String url, String? token}) async {
     Map<String, String> headers = {};
-    if (token != null) {
-      headers.addAll({'Authorization': 'Bearer $token'});
-    }
+
+    headers.addAll({'Authorization': 'Bearer ${dotenv.env['baseUrl']}'});
 
     var response = await _dio.get(
       url,
