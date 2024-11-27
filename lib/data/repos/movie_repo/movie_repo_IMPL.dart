@@ -18,7 +18,73 @@ class MovieRepoImpl implements MovieRepo {
   }) async {
     try {
       final response = await apiService.get(
-        url: '${dotenv.env[kbaseUrl]}popular?api_key=${dotenv.env[kapiKey]}&language=en-US&page=$page',
+        url:
+            '${dotenv.env[kbaseUrl]}popular?api_key=${dotenv.env[kapiKey]}&language=en-US&page=$page',
+      );
+
+      if (response.containsKey('results')) {
+        final List<MovieModel> movies = (response['results'] as List)
+            .map((data) => MovieModel.fromJson(data))
+            .toList();
+        return right(movies);
+      } else {
+        throw Exception('Invalid response format: Movie repo IMPL');
+      }
+    } on DioException catch (dioException) {
+      return left(ServerFailure.DioException(dioException));
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
+    }
+  }
+
+  Future<Either<Failure, List<MovieModel>>> getUpcomingMovies() async {
+    try {
+      final response = await apiService.get(
+        url: '${dotenv.env[kbaseUrl]}upcoming?api_key=${dotenv.env[kapiKey]}',
+      );
+
+      if (response.containsKey('results')) {
+        final List<MovieModel> movies = (response['results'] as List)
+            .map((data) => MovieModel.fromJson(data))
+            .toList();
+        return right(movies);
+      } else {
+        throw Exception('Invalid response format: Movie repo IMPL');
+      }
+    } on DioException catch (dioException) {
+      print(dioException);
+      return left(ServerFailure.DioException(dioException));
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
+    }
+  }
+
+  Future<Either<Failure, List<MovieModel>>> getTopRatedMovies() async {
+    try {
+      final response = await apiService.get(
+        url: '${dotenv.env[kbaseUrl]}top_rated?api_key=${dotenv.env[kapiKey]}',
+      );
+
+      if (response.containsKey('results')) {
+        final List<MovieModel> movies = (response['results'] as List)
+            .map((data) => MovieModel.fromJson(data))
+            .toList();
+        return right(movies);
+      } else {
+        throw Exception('Invalid response format: Movie repo IMPL');
+      }
+    } on DioException catch (dioException) {
+      return left(ServerFailure.DioException(dioException));
+    } catch (e) {
+      return left(ServerFailure(e.toString()));
+    }
+  }
+
+  Future<Either<Failure, List<MovieModel>>> getNowPlayingMovies() async {
+    try {
+      final response = await apiService.get(
+        url:
+            '${dotenv.env[kbaseUrl]}now_playing?api_key=${dotenv.env[kapiKey]}',
       );
 
       if (response.containsKey('results')) {

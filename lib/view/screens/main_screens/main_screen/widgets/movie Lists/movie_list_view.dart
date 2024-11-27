@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sahra/data/cubits/getmovies_cubit.dart';
+import 'package:sahra/bloc/get_populer_cubits/getmovies_cubit.dart';
 import 'package:sahra/view/screens/main_screens/main_screen/widgets/movie_item.dart';
 
 class MovieListView extends StatefulWidget {
@@ -30,13 +30,15 @@ class _MovieListViewState extends State<MovieListView> {
 
   // Detect scrolling position to increase or decrease the page
   void _scrollListener() {
-    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
       // Reached bottom, increase the page
       setState(() {
         page++;
       });
       _loadMoreMovies();
-    } else if (_scrollController.position.pixels == _scrollController.position.minScrollExtent) {
+    } else if (_scrollController.position.pixels ==
+        _scrollController.position.minScrollExtent) {
       // Reached top, decrease the page
       if (page > 1) {
         setState(() {
@@ -61,16 +63,18 @@ class _MovieListViewState extends State<MovieListView> {
           return RefreshIndicator(
             onRefresh: () async {
               setState(() {
-                page = 1; // Reset to page 1 on pull to refresh
+                page = 1;
               });
               await BlocProvider.of<GetmoviesCubit>(context).fetchMovies(page);
             },
             child: ListView.builder(
-              controller: _scrollController, // Attach the scroll controller
+              controller: _scrollController,
               itemCount: state.movies.length,
               itemBuilder: (context, index) {
                 return MovieItem(
-                    movieItemDetails: state.movies[index], height: 200, width: 100);
+                    movieItemDetails: state.movies[index],
+                    height: 200,
+                    width: 100);
               },
             ),
           );

@@ -17,7 +17,6 @@ class _SplashScreenState extends State<SplashScreen> {
         .then((_) => widget.onInitialComplete());
   }
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

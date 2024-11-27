@@ -1,6 +1,5 @@
 part of 'getmovies_cubit.dart';
 
-
 abstract class GetmoviesState {}
 
 class GetmoviesInitial extends GetmoviesState {}
@@ -15,6 +14,6 @@ class GetmoviesSuccess extends GetmoviesState {
 
 class GetmoviesFailure extends GetmoviesState {
   final String errmsg;
-  
+
   GetmoviesFailure({required this.errmsg});
 }

@@ -1,6 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:sahra/view/screens/main_screens/main_screen/widgets/movie_list_view.dart';
+import 'package:sahra/view/screens/main_screens/main_screen/widgets/movie%20Lists/movie_list_view.dart';
+import 'package:sahra/view/screens/main_screens/main_screen/widgets/movie%20Lists/playing_now_list.dart';
+import 'package:sahra/view/screens/main_screens/main_screen/widgets/movie%20Lists/top_rated_list.dart';
+import 'package:sahra/view/screens/main_screens/main_screen/widgets/movie%20Lists/upcoming_movie_list.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -56,9 +59,7 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _foregroundWidget(double height , double width) {
-
-
+  Widget _foregroundWidget(double height, double width) {
     return SafeArea(
       child: Container(
         padding: EdgeInsets.fromLTRB(0, 0, 0, height * .01),
@@ -116,12 +117,14 @@ class _MainScreenState extends State<MainScreen> {
   Widget _dropDownMenu() {
     return DropdownButton<String>(
       value: _selectedCategory,
-      dropdownColor: Colors.deepPurple.withOpacity(.5),
-      style: const TextStyle(color: Colors.white24),
+      dropdownColor: Colors.black.withOpacity(.6),
+      style: const TextStyle(color: Colors.white60),
       items: const [
         DropdownMenuItem<String>(value: "populer", child: Text("Populer")),
         DropdownMenuItem<String>(value: "upcoming", child: Text("Upcoming")),
         DropdownMenuItem<String>(value: "latest", child: Text("Latest")),
+        DropdownMenuItem<String>(
+            value: "PlayingNow", child: Text("PlayingNow")),
       ],
       onChanged: (String? newValue) {
         setState(() {
@@ -132,6 +135,14 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _itemListWidget() {
-    return const MovieListView();
+    if (_selectedCategory == 'populer') {
+      return const MovieListView();
+    } else if (_selectedCategory == 'upcoming') {
+      return const UpcomingMovieList();
+    } else if (_selectedCategory == 'PlayingNow') {
+      return const PlayingNowList();
+    } else {
+      return const TopRatedList();
+    }
   }
 }

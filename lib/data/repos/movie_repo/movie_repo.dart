@@ -7,4 +7,7 @@ abstract class MovieRepo {
     required int page,
     String? token,
   });
+  Future<Either<Failure, List<MovieModel>>> getTopRatedMovies();
+  Future<Either<Failure, List<MovieModel>>> getUpcomingMovies();
+  Future<Either<Failure, List<MovieModel>>> getNowPlayingMovies();
 }
