@@ -1,5 +1,5 @@
 class SearchCategory {
-  static final String populer = "populer";
-  static final String upcoming = "upcoming";
-  static final String none = "";
+  static const String populer = "populer";
+  static const String upcoming = "upcoming";
+  static const String none = "";
 }

@@ -4,7 +4,7 @@ import 'package:sahra/bloc/get_populer_cubits/getmovies_cubit.dart';
 import 'package:sahra/view/screens/main_screens/main_screen/widgets/movie_item.dart';
 
 class MovieListView extends StatefulWidget {
-  const MovieListView({Key? key}) : super(key: key);
+  const MovieListView({super.key});
 
   @override
   _MovieListViewState createState() => _MovieListViewState();

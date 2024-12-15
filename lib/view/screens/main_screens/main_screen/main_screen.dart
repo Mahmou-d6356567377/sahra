@@ -22,19 +22,19 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double _deviceheight = MediaQuery.of(context).size.height;
-    double _devicewidth = MediaQuery.of(context).size.width;
+    double deviceheight = MediaQuery.of(context).size.height;
+    double devicewidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: Colors.black,
       body: SizedBox(
-        height: _deviceheight,
-        width: _devicewidth,
+        height: deviceheight,
+        width: devicewidth,
         child: Stack(
           alignment: Alignment.center,
           children: [
             _backgroundWidget(),
-            _foregroundWidget(_deviceheight, _devicewidth),
+            _foregroundWidget(deviceheight, devicewidth),
           ],
         ),
       ),

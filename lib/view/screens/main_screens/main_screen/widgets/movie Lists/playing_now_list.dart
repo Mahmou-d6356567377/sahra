@@ -5,7 +5,7 @@ import 'package:sahra/bloc/get_upcoming_cubit/get_up_coming_cubit_cubit.dart';
 import 'package:sahra/view/screens/main_screens/main_screen/widgets/movie_item.dart';
 
 class PlayingNowList extends StatefulWidget {
-  const PlayingNowList({Key? key}) : super(key: key);
+  const PlayingNowList({super.key});
 
   @override
   _PlayingNowListState createState() => _PlayingNowListState();

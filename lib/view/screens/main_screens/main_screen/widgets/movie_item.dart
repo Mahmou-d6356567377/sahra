@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sahra/bloc/get_movie_details_cubit/get_movie_details_cubit.dart';
 import 'package:sahra/core/constants/constants_properties.dart';
+import 'package:sahra/core/routes/app_routes.dart';
 import 'package:sahra/data/models/movie_model/movie_model.dart';
 import 'package:get_it/get_it.dart';
 
@@ -21,7 +25,9 @@ class MovieItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        // Add your logic here
+         BlocProvider.of<GetMovieDetailsCubit>(context)
+            .fetchTopRatedMovies(movieItemDetails.id!);
+        GoRouter.of(context).push(AppRoutes.ms2,);
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: deviceHeight * 0.01),
@@ -67,6 +73,7 @@ class MovieItem extends StatelessWidget {
                 child: Text(
                   movieItemDetails.title!,
                   style: const TextStyle(
+                    fontFamily: kmainfont,
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
                     fontSize: 18,

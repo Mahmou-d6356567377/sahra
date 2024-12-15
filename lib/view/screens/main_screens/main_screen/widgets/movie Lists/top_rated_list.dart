@@ -4,7 +4,7 @@ import 'package:sahra/bloc/get_top_rated_cubit/get_top_rated_cubit_cubit.dart';
 import 'package:sahra/view/screens/main_screens/main_screen/widgets/movie_item.dart';
 
 class TopRatedList extends StatefulWidget {
-  const TopRatedList({Key? key}) : super(key: key);
+  const TopRatedList({super.key});
 
   @override
   _TopRatedListState createState() => _TopRatedListState();
