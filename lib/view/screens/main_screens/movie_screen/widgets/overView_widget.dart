@@ -28,6 +28,7 @@ class _MovieOverviewState extends State<MovieOverview> {
             textAlign: TextAlign.start,
             style: const TextStyle(
               fontSize: 15,
+              color: Colors.grey,
               fontFamily: kmainfont, 
               fontWeight: FontWeight.w400,
             ),

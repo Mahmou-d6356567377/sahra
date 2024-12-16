@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sahra/bloc/get_movie_details_cubit/get_movie_details_cubit.dart';
 import 'package:sahra/bloc/similer_movie_cubit/similermovies_cubit.dart';
+import 'package:sahra/core/routes/app_routes.dart';
 import 'package:sahra/view/screens/main_screens/movie_screen/widgets/similer_movie_item.dart';
 
 class SimilerMovieGridView extends StatefulWidget {
@@ -44,7 +47,13 @@ class _SimilerMovieGridViewState extends State<SimilerMovieGridView> {
                  width: 200, // Explicit width for each item
                  child: Padding(
                    padding: const EdgeInsets.all(8.0),
-                   child: SimilerMovieItem(movie: movie),
+                   child: GestureDetector(
+                    onTap: () {
+                      BlocProvider.of<GetMovieDetailsCubit>(context)
+                         .fetchTopRatedMovies(movie.id!);
+                     GoRouter.of(context).push(AppRoutes.ms2,);
+      },
+                    child: SimilerMovieItem(movie: movie)),
                  ),
                );
              },

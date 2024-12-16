@@ -146,5 +146,33 @@ class MovieRepoImpl implements MovieRepo {
       return left(ServerFailure(e.toString()));
     }
   }
+  
+  @override
+  Future<Either<Failure, List<MovieModel>>> getSearchedMovies({
+    required String moviename ,
+     required int page ,
+      required String language , 
+      required bool adult , 
+       }) async{
+    try {
+      final response = await apiService.get(
+        url: '${dotenv.env[kbasesearchURL]}include_adult=$adult&language=$language&page=$page&query=$moviename&api_key=${dotenv.env[kapiKey]}',
+      );
+      
+       if (response.containsKey('results')) {
+        final List<MovieModel> movies = (response['results'] as List)
+            .map((data) => MovieModel.fromJson(data))
+            .toList();
+        return right(movies);
+      } else {
+        throw Exception('Invalid response format: Movie repo IMPL');
+      }
+    } on DioException catch (dioException) {
+      return left(ServerFailure.DioException(dioException));
+    } catch (e) {
+      
+      return left(ServerFailure(e.toString()));
+    }
+  }
 
 }

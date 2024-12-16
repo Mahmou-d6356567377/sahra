@@ -41,3 +41,7 @@ flutter:
         - asset: assets/fonts/Fira_Sans/FiraSans-BlackItalic.ttf
           weight: 900
           style: italic
+    - family: Josefin
+      fonts:
+        - asset: assets/fonts/Fira_Sans,Josefin_Sans/Josefin_Sans/JosefinSans-VariableFont_wght.ttf
+             

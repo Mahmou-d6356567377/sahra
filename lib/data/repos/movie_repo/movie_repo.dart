@@ -13,4 +13,10 @@ abstract class MovieRepo {
   Future<Either<Failure, List<MovieModel>>> getNowPlayingMovies();
   Future<Either<Failure, MoviePageModel>> getMovieDetails(int movieId);
   Future<Either<Failure, List<MovieModel>>> getSimilerMovies(int movieId);
+  Future<Either<Failure, List<MovieModel>>> getSearchedMovies({
+    required String moviename,
+    required int page,
+    required String language,
+    required bool adult,
+  });
 }

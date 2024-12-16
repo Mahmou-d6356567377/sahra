@@ -136,10 +136,15 @@ class MovieScrean extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('$country : $language'),
+          Text('$country : $language' ,style: const TextStyle(
+          color: Colors.grey,
+          fontFamily: kmainfont,
+        ),),
           Row(
             children: [
-              Text(popularity),
+              Text(popularity ,style: const TextStyle(
+          color: Colors.grey,
+        ),),
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Icon(Icons.remove_red_eye),
@@ -178,6 +183,7 @@ class MovieScrean extends StatelessWidget {
         textAlign: TextAlign.center,
         style: const TextStyle(
           fontSize: 20,
+          color: Colors.grey,
           fontFamily: kmainfont,
           fontStyle: FontStyle.italic,
         ),

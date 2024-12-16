@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sahra/bloc/get_populer_cubits/getmovies_cubit.dart';
+import 'package:sahra/bloc/get_search_movies_cubit/get_seach_movie_cubit.dart';
 import 'package:sahra/view/screens/main_screens/main_screen/widgets/movie_item.dart';
 
-class MovieListView extends StatefulWidget {
-  const MovieListView({super.key});
-
+class SearchListView extends StatefulWidget {
+  const SearchListView({super.key, required this.moviename});
+final String moviename;
   @override
-  _MovieListViewState createState() => _MovieListViewState();
+  _SearchListState createState() => _SearchListState();
 }
 
-class _MovieListViewState extends State<MovieListView> {
+class _SearchListState extends State<SearchListView> {
   final ScrollController _scrollController = ScrollController();
-  int page = 1; // Initiala page
+  int page = 1; // Initial page
   bool isScrollingDown = false;
 
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<GetSeachMovieCubit>(context).fetchSearchMovies(moviename: widget.moviename, page: page, language: 'en', adult: true);
     _scrollController.addListener(_scrollListener);
   }
 
@@ -50,22 +51,22 @@ class _MovieListViewState extends State<MovieListView> {
   }
 
   // Fetch more movies when page changes
-  void _loadMoreMovies({bool isScrollingDown = true}) {
+  void _loadMoreMovies({bool isScrollingDown = true})async {
     // Call the Cubit to fetch movies for the new page
-    BlocProvider.of<GetmoviesCubit>(context).fetchMovies(page);
+   await BlocProvider.of<GetSeachMovieCubit>(context).fetchSearchMovies(moviename: widget.moviename, page: page, language: 'en', adult: true);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GetmoviesCubit, GetmoviesState>(
+    return BlocBuilder<GetSeachMovieCubit, GetSeachMovieState>(
       builder: (context, state) {
-        if (state is GetmoviesSuccess) {
+        if (state is GetSeachMovieSuccess) {
           return RefreshIndicator(
             onRefresh: () async {
               setState(() {
                 page = 1;
               });
-              await BlocProvider.of<GetmoviesCubit>(context).fetchMovies(page);
+              await BlocProvider.of<GetSeachMovieCubit>(context).fetchSearchMovies(moviename: widget.moviename, page: page, language: 'en', adult: true);
             },
             child: ListView.builder(
               controller: _scrollController,
@@ -78,7 +79,7 @@ class _MovieListViewState extends State<MovieListView> {
               },
             ),
           );
-        } else if (state is GetmoviesFailure) {
+        } else if (state is GetSeachMovieFailure) {
           return Center(
             child: Text(
               state.errmsg,
@@ -86,7 +87,7 @@ class _MovieListViewState extends State<MovieListView> {
               textAlign: TextAlign.center,
             ),
           );
-        } else if (state is GetmoviesLoading) {
+        } else if (state is GetSeachMovieLoading) {
           return const Center(
             child: CircularProgressIndicator(
               backgroundColor: Colors.white,

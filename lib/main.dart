@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sahra/bloc/get_PlayIngNow_cubits/get_play_iing_now_cubit.dart';
 import 'package:sahra/bloc/get_movie_details_cubit/get_movie_details_cubit.dart';
+import 'package:sahra/bloc/get_search_movies_cubit/get_seach_movie_cubit.dart';
 import 'package:sahra/bloc/get_top_rated_cubit/get_top_rated_cubit_cubit.dart';
 import 'package:sahra/bloc/get_upcoming_cubit/get_up_coming_cubit_cubit.dart';
 import 'package:sahra/bloc/similer_movie_cubit/similermovies_cubit.dart';
@@ -53,6 +54,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => SimilermoviesCubit(getIt.get<MovieRepoImpl>()),
+        ),
+         BlocProvider(
+          create: (context) => GetSeachMovieCubit(getIt.get<MovieRepoImpl>()),
         ),
       ],
       child: ScreenUtilInit(

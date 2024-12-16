@@ -57,7 +57,7 @@ class SimilerMovieItem extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text("${movie.popularity.toString()}  ", style: TextStyle(color: Colors.grey),),
+                            Text("${movie.popularity.toString()}  ", style: const TextStyle(color: Colors.grey),),
                             const Icon(Icons.remove_red_eye , color: Colors.grey, )
                           ],
                         )
