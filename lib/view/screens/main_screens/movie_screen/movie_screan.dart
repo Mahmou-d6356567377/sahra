@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sahra/bloc/get_movie_details_cubit/get_movie_details_cubit.dart';
 import 'package:sahra/core/constants/constants_properties.dart';
 import 'package:sahra/data/models/movie_page_model/movie_page_model.dart';
+import 'package:sahra/view/screens/main_screens/movie_screen/widgets/custom_fav_button.dart';
 import 'package:sahra/view/screens/main_screens/movie_screen/widgets/explore&ratingWidget.dart';
 import 'package:sahra/view/screens/main_screens/movie_screen/widgets/overView_widget.dart';
 import 'package:sahra/view/screens/main_screens/movie_screen/widgets/similer_movie_grid_view.dart';
@@ -19,25 +20,32 @@ class MovieScrean extends StatelessWidget {
     double height = MediaQuery.sizeOf(context).height;
     double width = MediaQuery.sizeOf(context).width;
 
-    return Scaffold(
-      body: BlocBuilder<GetMovieDetailsCubit, GetMovieDetailsState>(
-        builder: (context, state) {
-          if (state is GetMovieDetailsSuccess) {
-            return _successBody(context, state.movieDetails, height, width);
-          } else if (state is GetMovieDetailsFailure) {
-            return Center(
+    return BlocBuilder<GetMovieDetailsCubit, GetMovieDetailsState>(
+      builder: (context, state) {
+        if (state is GetMovieDetailsSuccess) {
+          final movieDetails = state.movieDetails;
+          return Scaffold(
+            floatingActionButton: CustomFavButton(
+              movieDetails: movieDetails, // Pass the data here
+            ),
+            body: _successBody(context, movieDetails, height, width),
+          );
+        } else if (state is GetMovieDetailsFailure) {
+          return Scaffold(
+            body: Center(
               child: Text(state.errMsg),
-            );
-          } else {
-            return const Center(
+            ),
+          );
+        } else {
+          return const Scaffold(
+            body: Center(
               child: CircularProgressIndicator.adaptive(),
-            );
-          }
-        },
-      ),
+            ),
+          );
+        }
+      },
     );
   }
-
 
   Widget _backgroundWidget(String img) {
     return Container(
@@ -45,8 +53,10 @@ class MovieScrean extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        image:  DecorationImage(
-            fit: BoxFit.cover, image: NetworkImage("${dotenv.env[kimagebaseurl]}$img")),
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: NetworkImage("${dotenv.env[kimagebaseurl]}$img"),
+        ),
       ),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
@@ -56,7 +66,7 @@ class MovieScrean extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _successBody(BuildContext context, 
       MoviePageModel movieDetails, double height, double width) {
     return Stack(
@@ -83,7 +93,7 @@ class MovieScrean extends StatelessWidget {
                     ),
                     _thirdRow(),
                     SizedBox(
-                      height: 250, 
+                      height: 250,
                       child: SimilerMovieGridView(
                         movieId: movieDetails.id!,
                       ),
@@ -136,15 +146,21 @@ class MovieScrean extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('$country : $language' ,style: const TextStyle(
-          color: Colors.grey,
-          fontFamily: kmainfont,
-        ),),
+          Text(
+            '$country : $language',
+            style: const TextStyle(
+              color: Colors.grey,
+              fontFamily: kmainfont,
+            ),
+          ),
           Row(
             children: [
-              Text(popularity ,style: const TextStyle(
-          color: Colors.grey,
-        ),),
+              Text(
+                popularity,
+                style: const TextStyle(
+                  color: Colors.grey,
+                ),
+              ),
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Icon(Icons.remove_red_eye),

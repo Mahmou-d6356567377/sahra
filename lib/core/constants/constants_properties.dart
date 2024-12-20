@@ -3,6 +3,7 @@ const klogo2 = "assets/images/logo2.png";
 
 const kbaseUrl = "baseUrl";
 const kapiKey = "apiKey";
+const kboxname = "favBox1";
 const kbasesearchURL = "basesearchURL";
 const kimagebaseurl = "imagebaseurl";
 const kmainfont = "FiraSans";

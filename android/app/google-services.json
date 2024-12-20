@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "771034140705",
+    "project_id": "sahra-aa78b",
+    "storage_bucket": "sahra-aa78b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771034140705:android:178019afbbd621ac9a5360",
+        "android_client_info": {
+          "package_name": "com.example.sahra"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnkxwJbDyOPHp36C9w4_Wv6Fy6oozDYsk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

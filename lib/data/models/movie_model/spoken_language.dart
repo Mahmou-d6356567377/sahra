@@ -1,6 +1,16 @@
+import 'package:hive_flutter/hive_flutter.dart';
+
+part 'spoken_language.g.dart'; // Required for Hive code generation.
+
+@HiveType(typeId: 1) // Assign a unique typeId.
 class SpokenLanguage {
+  @HiveField(0)
   String? englishName;
+
+  @HiveField(1)
   String? iso6391;
+
+  @HiveField(2)
   String? name;
 
   SpokenLanguage({this.englishName, this.iso6391, this.name});

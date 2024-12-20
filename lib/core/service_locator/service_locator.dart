@@ -5,7 +5,9 @@ import 'package:sahra/data/sources/API/api_service.dart';
 final getIt = GetIt.instance;
 
 void serviceLocator() {
-  getIt.registerSingleton<ApiService>(ApiService());
-  getIt.registerSingleton<MovieRepoImpl>(
-      MovieRepoImpl(apiService: getIt.get<ApiService>()));
+  // Register ApiService as a lazy singleton
+  getIt.registerLazySingleton(() => ApiService());
+
+  // Register MovieRepoImpl as a lazy singleton
+  getIt.registerLazySingleton(() => MovieRepoImpl(apiService: getIt.get<ApiService>()));
 }

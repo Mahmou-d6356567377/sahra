@@ -1,9 +1,13 @@
-import 'belongs_to_collection.dart';
-import 'genre.dart';
-import 'production_company.dart';
-import 'production_country.dart';
-import 'spoken_language.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:sahra/data/models/movie_model/genre.dart';
+import 'package:sahra/data/models/movie_model/production_company.dart';
+import 'package:sahra/data/models/movie_model/production_country.dart';
+import 'package:sahra/data/models/movie_model/spoken_language.dart';
+import 'package:sahra/data/models/movie_page_model/belongs_to_collection.dart';
+part 'movie_page_model.g.dart';
 
+
+@HiveType(typeId: 0)
 class MoviePageModel {
   bool? adult;
   String? backdropPath;
@@ -11,13 +15,16 @@ class MoviePageModel {
   int? budget;
   List<Genre>? genres;
   String? homepage;
+  @HiveField(0)
   int? id;
   String? imdbId;
   List<dynamic>? originCountry;
   String? originalLanguage;
+  @HiveField(1)
   String? originalTitle;
   String? overview;
   double? popularity;
+  @HiveField(2)
   String? posterPath;
   List<ProductionCompany>? productionCompanies;
   List<ProductionCountry>? productionCountries;

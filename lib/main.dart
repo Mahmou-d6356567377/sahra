@@ -1,7 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:sahra/bloc/get_PlayIngNow_cubits/get_play_iing_now_cubit.dart';
 import 'package:sahra/bloc/get_movie_details_cubit/get_movie_details_cubit.dart';
 import 'package:sahra/bloc/get_search_movies_cubit/get_seach_movie_cubit.dart';
@@ -11,13 +13,25 @@ import 'package:sahra/bloc/similer_movie_cubit/similermovies_cubit.dart';
 import 'package:sahra/core/routes/app_routes.dart';
 import 'package:sahra/core/service_locator/service_locator.dart';
 import 'package:sahra/bloc/get_populer_cubits/getmovies_cubit.dart';
+import 'package:sahra/data/models/movie_page_model/spoken_language.dart';
 import 'package:sahra/data/repos/movie_repo/movie_repo_IMPL.dart';
+import 'package:sahra/firebase_options.dart';
 import 'package:sahra/view/screens/intro_screens/splash_screen/splash_screen.dart';
 
+import 'data/models/movie_page_model/movie_page_model.dart';
+
 void main() async {
-  await dotenv.load(fileName: '.env');
   WidgetsFlutterBinding.ensureInitialized();
 
+  await Hive.initFlutter();
+
+ Hive.registerAdapter(MoviePageModelAdapter());
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform, 
+  );
+
+  await dotenv.load(fileName: '.env');
 
   serviceLocator();
 
@@ -49,13 +63,13 @@ class MyApp extends StatelessWidget {
           create: (context) => GetPlayIingNowCubit(getIt.get<MovieRepoImpl>())
             ..fetchPlayingNowMovies(),
         ),
-         BlocProvider(
+        BlocProvider(
           create: (context) => GetMovieDetailsCubit(getIt.get<MovieRepoImpl>()),
         ),
         BlocProvider(
           create: (context) => SimilermoviesCubit(getIt.get<MovieRepoImpl>()),
         ),
-         BlocProvider(
+        BlocProvider(
           create: (context) => GetSeachMovieCubit(getIt.get<MovieRepoImpl>()),
         ),
       ],
