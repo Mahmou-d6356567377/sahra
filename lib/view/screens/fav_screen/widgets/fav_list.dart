@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:sahra/core/constants/constants_properties.dart';
+import 'package:sahra/data/models/movie_page_model/movie_page_model.dart';
 import 'package:sahra/view/screens/fav_screen/widgets/fav_movie_item.dart';
 
 class FavListView extends StatefulWidget {
@@ -22,13 +23,17 @@ class _FavListViewState extends State<FavListView> {
   }
 
   Future<void> deleteBox() async {
-    var box = await Hive.openBox('yourBoxName');
-    await box.deleteFromDisk();
+    
+     movieBox?.deleteFromDisk();
     print('The box has been deleted from disk.');
   }
 
   Future<void> _openBox() async {
-    movieBox = await Hive.openBox(kboxname);
+    if (!Hive.isBoxOpen(kboxname)) {
+    movieBox = await Hive.openBox<MoviePageModel>(kboxname);
+  } else {
+    movieBox = Hive.box<MoviePageModel>(kboxname);
+  }
     setState(() {});
   }
 
@@ -64,31 +69,23 @@ class _FavListViewState extends State<FavListView> {
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: () async {
-        setState(() {
-          movies.clear();
-          movies.addAll(movieBox!.values);
-        });
-      },
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: .55,
-          crossAxisSpacing: 5,
-          mainAxisSpacing: 5,
-        ),
-        controller: _scrollController,
-        itemCount: movies.length,
-        itemBuilder: (context, index) {
-          final movie = movies[index]; 
-          return MovieCard(
-            id: movie.id!,
-            image: movie.posterPath ?? '',
-            description: movie.originalTitle ?? 'No description available',
-          );
-        },
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        childAspectRatio: .55,
+        crossAxisSpacing: 5,
+        mainAxisSpacing: 5,
       ),
+      controller: _scrollController,
+      itemCount: movies.length,
+      itemBuilder: (context, index) {
+        final movie = movies[index]; 
+        return MovieCard(
+          id: movie.id!,
+          image: movie.posterPath ?? '',
+          description: movie.originalTitle ?? 'No description available',
+        );
+      },
     );
   }
 }
